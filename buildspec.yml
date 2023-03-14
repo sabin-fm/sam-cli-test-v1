@@ -9,10 +9,10 @@ phases:
     commands:
       - |
         sam deploy --no-confirm-changeset --no-fail-on-empty-changeset \
-        --s3-bucket $CODEPIPELINE_BUCKET \
-        --s3-prefix $STACK_NAME \
-        --region $AWS_REGION \
-        --stack-name $STACK_NAME \
+        --s3-bucket sam-cli-test-v1 \
+        --s3-prefix dev \
+        --region us-west-1 \
+        --stack-name sam-test-v1\
         --capabilities CAPABILITY_IAM \
         --parameter-overrides \
-        Environment=$ENVIRONMENT
+        Environment=dev
