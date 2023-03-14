@@ -7,8 +7,7 @@ phases:
 
   post_build:
     commands:
-      - |
-        sam deploy --no-confirm-changeset --no-fail-on-empty-changeset \
+      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset \
         --s3-bucket sam-cli-test-v1 \
         --s3-prefix dev \
         --region us-west-1 \
