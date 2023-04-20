@@ -17,7 +17,7 @@ phases:
      #- sam --version
   pre_build:
     commands:
-      - .deploy.sh
+      - ./deploy.sh
 
   build:
     commands:
