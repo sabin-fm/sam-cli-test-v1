@@ -17,8 +17,8 @@ phases:
      #- sam --version
   pre_build:
     commands:
-      - chmod +x ./deploy.sh
-      - ./deploy.sh
+      #- chmod +x ./deploy.sh
+      #- ./deploy.sh
 
   build:
     commands:
