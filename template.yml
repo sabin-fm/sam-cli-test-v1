@@ -34,6 +34,6 @@ Resources:
             Path: /hello
             Method: get
     Metadata:
-      Dockerfile: hello_world_docker
+      Dockerfile: Dockerfile
       DockerContext: .
       DockerTag: v1
