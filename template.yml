@@ -25,7 +25,7 @@ Resources:
     Properties:
       PackageType: Image
       ImageConfig:
-        Command: ["helo_world/lambda_function.lambda_handler"]
+        Command: ["lambda_function.lambda_handler"]
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -34,6 +34,6 @@ Resources:
             Path: /hello
             Method: get
     Metadata:
-      Dockerfile: hello_world/Dockerfile
+      Dockerfile: Dockerfile
       DockerContext: .
       DockerTag: v1
