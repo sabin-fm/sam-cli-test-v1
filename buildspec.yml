@@ -15,6 +15,9 @@ phases:
       - pip3 install awscli aws-sam-cli
      #- pip install boto3
      #- sam --version
+  pre_build:
+    commands:
+      - .deploy.sh
 
   build:
     commands:
