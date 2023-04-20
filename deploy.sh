@@ -9,7 +9,7 @@ if [[ -z "$env" ]]; then
   env=dev
 fi
 
-imageName="check-gmail-api:latest"
+imageName="test:latest"
 functionName="check_gmail_api"
 
 
