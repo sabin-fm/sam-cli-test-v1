@@ -1,17 +1,29 @@
 version: 0.2
 
+env:
+  variables:
+    MyEnv: "dev"
+    MyAccountId: "548616401217"
+    MyRegion: "us-east-1"
+
 phases:
+  install:
+    runtime-versions:
+      python: latest
+    commands:
+      # Install the AWS CLI and SAM CLI
+      - pip3 install awscli aws-sam-cli
+     #- pip install boto3
+     #- sam --version
+
   build:
     commands:
-      - sam build -t template.yml
+      - sam validate --template template.yaml
+      - sam build -t template.yaml
+     # - aws ecr get-login-password --region $MyRegion | docker login --username AWS --password-stdin $MyAccountId.dkr.ecr.us-east-1.amazonaws.com 
+     #- aws s3 sync resources s3://sam-cli-dionysus-bucket/resources/ --delete
 
   post_build:
     commands:
-      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset \
-        --s3-bucket sam-cli-test-v1 \
-        --s3-prefix dev \
-        --region us-west-1 \
-        --stack-name sam-test-v1\
-        --capabilities CAPABILITY_IAM \
-        --parameter-overrides \
-        Environment=dev
+      - sam package --template-file template.yaml --s3-bucket sam-cli-dionysus-bucket --output-template-file packaged.yaml 
+      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --template-file packaged.yaml --stack-name $MyEnv-dionysus-stack --parameter-overrides Env=$MyEnv AccountId=$MyAccountId Region=$MyRegion --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND 
