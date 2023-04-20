@@ -1,58 +1,39 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Transform: AWS::Serverless-2016-10-31
-Description: >
-  AWS SAM Lambda function example 
-  
 Parameters:
-  Environment:
+  Region:
     Type: String
-    Description: Environment name
+    #Default: 'us-east-1'
+    Description: The AWS region in which to create resources
 
-Globals:
-  Function:
-    Timeout: 3
-
+  AccountId:
+    Type: String
+    #Default: '548616401217'
+    Description: The AWS account ID where the resources will be created.
+      
+  Env:
+    Type: String
+    #Default: 'devops'
+    Description: Environment name.
 Resources:
-  DdbTable:
-    Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
+  HelloWorldAPI:
+    Type: AWS::Serverless::Api
     Properties:
-      TableName: !Sub tutorial-dynamodb-cicd-${Environment}
-      AttributeDefinitions:
-        - AttributeName: pk
-          AttributeType: S
-        - AttributeName: sk
-          AttributeType: S
-      KeySchema:
-        - AttributeName: pk
-          KeyType: HASH
-        - AttributeName: sk
-          KeyType: RANGE
-      BillingMode: PAY_PER_REQUEST
-      ProvisionedThroughput:
-        ReadCapacityUnits: 0
-        WriteCapacityUnits: 0
-
-  MainFunction:
-    Type: AWS::Serverless::Function
+      Name: Hello World API
+      StageName: Prod
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      FunctionName: !Sub sam-function-example-${Environment}
-      CodeUri: src/
-      Handler: main.handler
-      Runtime: nodejs12.x
-      Environment:
-        Variables:
-          ddbTable: !Ref DdbTable
-      Policies:
-      - Statement:
-        - Sid: DynamoDBPolicy
-          Effect: Allow
-          Action:
-            - dynamodb:PutItem
-          Resource:
-            - !GetAtt DdbTable.Arn
-
-Outputs:
-  MainFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt MainFunction.Arn
+      PackageType: Image
+      ImageConfig:
+        Command: ["app.lambda_handler"]
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref HelloWorldAPI
+            Path: /hello
+            Method: get
+    Metadata:
+      Dockerfile: hello_world_docker
+      DockerContext: .
+      DockerTag: v1
