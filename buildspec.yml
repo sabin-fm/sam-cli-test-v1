@@ -28,5 +28,5 @@ phases:
     commands:
       #- sam deploy --stack-name sam-app --resolve-s3 --capabilities CAPABILITY_IAM --resolve-image-repos
       
-      - sam package --template-file template.yml --s3-bucket sam-cli-dionysus-bucket --output-template-file packaged.yml
-      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --template-file packaged.yml --stack-name  --resolve-image-repos $MyEnv-dionysus-stack --parameter-overrides Env=$MyEnv AccountId=$MyAccountId Region=$MyRegion --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND 
+      - sam package --template-file template.yml --s3-bucket sam-cli-dionysus-bucket --output-template-file packaged.yml --resolve-image-repos
+      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --template-file packaged.yml --stack-name --resolve-image-repos $MyEnv-dionysus-stack --parameter-overrides Env=$MyEnv AccountId=$MyAccountId Region=$MyRegion --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND 
