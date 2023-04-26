@@ -66,4 +66,4 @@ Outputs:
     Description: ARN of the MyLambdaFunction1 Lambda function
     Value: !GetAtt MyLambdaFunction1.Arn
     Export:
-      Name: !Sub '${Env}-MyLambdaFunction1Arn'
+      Name: !Sub 'MyLambdaFunction1Arn'
