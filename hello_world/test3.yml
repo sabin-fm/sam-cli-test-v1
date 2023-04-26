@@ -1,0 +1,89 @@
+AWSTemplateFormatVersion: '2010-09-09'
+#Transform: 'AWS::Serverless-2016-10-31'
+Parameters:
+  Region:
+    Type: String
+    #Default: 'us-east-1'
+    Description: The AWS region in which to create resources
+
+  AccountId:
+    Type: String
+    #Default: '548616401217'
+    Description: The AWS account ID where the resources will be created.
+      
+  Env:
+    Type: String
+    #Default: 'devops'
+    Description: Environment name.
+    
+Resources:
+
+  MyRestApi1:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: !Sub '${Env}_users_api'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  MyResource1:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref MyRestApi1
+      ParentId: 
+        Fn::GetAtt:
+          - "MyRestApi1"
+          - "RootResourceId"
+      PathPart: 'user'
+      
+  MyMethod1:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref MyRestApi1
+      ResourceId: !Ref MyResource1
+      HttpMethod: GET
+      AuthorizationType: NONE #COGNITO_USER_POOLS  # Set authorization type to COGNITO_USER_POOLS
+     # AuthorizerId: !Ref MyAuthorizer  # Set the ID of the authorizer
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction1.Arn}/invocations'
+   
+   
+  MyAuthorizer:
+    Type: 'AWS::ApiGateway::Authorizer'
+    Properties:
+      Name: my-cognito-authorizer
+      Type: COGNITO_USER_POOLS
+      IdentitySource: method.request.header.Authorization
+      RestApiId: !Ref MyRestApi1
+      ProviderARNs:
+        - !Sub arn:aws:cognito-idp:${Region}:${AccountId}:userpool/us-east-1_zHG6ezXPp    #${UserPoolId}
+
+  MyDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    DependsOn:
+      - MyMethod1
+       
+    Properties:
+      RestApiId: !Ref MyRestApi1
+
+  MyStage:
+    Type: 'AWS::ApiGateway::Stage'
+    Properties:
+      RestApiId: !Ref MyRestApi1
+      DeploymentId: !Ref MyDeployment
+      StageName: !Sub '${Env}'
+      Variables:
+        env: !Sub '${Env}'
+        
+  MyLambdaPermission1:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref MyLambdaFunction1
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApi1}/${Env}/GET/user'
+      
+      
+      
