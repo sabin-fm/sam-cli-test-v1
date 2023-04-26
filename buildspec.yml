@@ -13,24 +13,21 @@ phases:
     commands:
       # Install the AWS CLI and SAM CLI
       - pip3 install awscli aws-sam-cli
-     #- pip install boto3
-     #- sam --version
-  pre_build:
-    commands:
-      #- chmod +x ./deploy.sh
-      #- ./deploy.sh
+      # - pip install boto3
+      # - sam --version
 
   build:
     commands:
-     # - sam validate --template template.yml
-      - sam build --use-container -t template.yml
-      
-     #- aws ecr get-login-password --region $MyRegion | docker login --username AWS --password-stdin $MyAccountId.dkr.ecr.us-east-1.amazonaws.com 
-     #- aws s3 sync resources s3://sam-cli-dionysus-bucket/resources/ --delete
+      - sam validate --template template.yaml
+      - sam build -t template.yaml #--use-container
+      # - aws ecr get-login-password --region $MyRegion | docker login --username AWS --password-stdin $MyAccountId.dkr.ecr.us-east-1.amazonaws.com 
+      # - aws s3 sync resources s3://sam-cli-dionysus-bucket/resources/ --delete
 
   post_build:
     commands:
-      #- sam deploy --stack-name sam-app --resolve-s3 --capabilities CAPABILITY_IAM --resolve-image-repos
+      - sam package --template-file template.yaml --s3-bucket sam-cli-dionysus-bucket --output-template-file packaged.yaml
+      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --template-file packaged.yaml
+        --stack-name test-stack 
+        --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND 
+        --parameter-overrides Env=$MyEnv AccountId=$MyAccountId Region=$MyRegion 
       
-      - sam package --template-file template.yml --resolve-image-repos --resolve-s3 --output-template-file packaged.yml #--s3-bucket sam-cli-dionysus-bucket
-      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --template-file packaged.yml --stack-name --resolve-image-repos --stack-name testcase-stack --parameter-overrides Env=$MyEnv AccountId=$MyAccountId Region=$MyRegion --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND 
