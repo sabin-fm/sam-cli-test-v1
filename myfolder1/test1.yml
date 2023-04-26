@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+#Transform: AWS::Serverless-2016-10-31
+Parameters:
+  Region:
+    Type: String
+    #Default: us-west-1
+    Description: The AWS region in which to create resources.
+
+  AccountId:
+    Type: String
+    #Default: 548616401217
+    Description: The AWS account ID where the resources will be created.
+      
+  Env:
+    Type: String
+    #Default: dev
+    Description: Environment name.
+    
+Resources:
+
+  MyLambdaFunction1:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub '${Env}_test_1'
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt MyLambdaRole.Arn
+      Runtime: python3.9
+     # Layers:
+      #  - !Ref MyLambdaLayer
+      Environment:
+        Variables:
+          env: !Sub '${Env}'
+          
+  MyLambdaRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: '/'
+      Policies:
+        - PolicyName: MyLambdaPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - ecr:GetAuthorizationToken
+                  - ecr:BatchCheckLayerAvailability
+                  - ecr:GetDownloadUrlForLayer
+                  - ecr:BatchGetImage
+                Resource: '*
+          
+          
