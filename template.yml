@@ -31,7 +31,6 @@ Resources:
     Properties:
       TemplateURL: ./hello_world/test3.yml
       Parameters:
-        Parameters: 
         Region: !Ref Region
         AccountId: !Ref AccountId
         Env: !Ref Env
