@@ -60,17 +60,18 @@ Resources:
                   - ecr:BatchCheckLayerAvailability
                   - ecr:GetDownloadUrlForLayer
                   - ecr:BatchGetImage
-                Resource: '*
+                Resource: '*'
+
                 
 Outputs:
   MyLambdaFunction2Name:
-    Description: ARN of the MyLambdaFunction1 Lambda function
+    Description: Name of the MyLambdaFunction2 Lambda function
     Value: !Ref MyLambdaFunction2
     Export:
       Name: !Sub 'MyLambdaFunction2Name'
       
   MyLambdaFunction2Arn:
-    Description: ARN of the MyLambdaFunction1 Lambda function
+    Description: ARN of the MyLambdaFunction2 Lambda function
     Value: !GetAtt MyLambdaFunction2.Arn
     Export:
       Name: !Sub 'MyLambdaFunction2Arn'
