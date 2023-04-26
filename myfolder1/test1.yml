@@ -63,7 +63,7 @@ Resources:
                 Resource: '*'
 
 Outputs:
-MyLambdaFunction1Name:
+  MyLambdaFunction1Name:
     Description: ARN of the MyLambdaFunction1 Lambda function
     Value: !Ref MyLambdaFunction1
     Export:
