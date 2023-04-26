@@ -16,8 +16,12 @@ Parameters:
     #Default: 'devops'
     Description: Environment name.
     
+  LambdaFunctionArn1:
+    Type: String
+    #Default: dev
+    Description: LambdaFunction name.
+    
 Resources:
-
   MyRestApi1:
     Type: 'AWS::ApiGateway::RestApi'
     Properties:
@@ -47,7 +51,7 @@ Resources:
       Integration:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
-        Uri: !Sub 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction1.Arn}/invocations'
+        Uri: !Sub 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${MyLambdaFunctionArn1}/invocations'
    
    
   MyAuthorizer:
