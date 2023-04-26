@@ -25,7 +25,16 @@ Resources:
         Region: !Ref Region
         AccountId: !Ref AccountId
         Env: !Ref Env
-
+  
+  LambdaStack2:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ./myfolder2/test2.yml
+      Parameters:
+        Region: !Ref Region
+        AccountId: !Ref AccountId
+        Env: !Ref Env
+  
   ApiGatewayStack:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -36,4 +45,6 @@ Resources:
         Env: !Ref Env
         MyLambdaFunctionName1: !GetAtt LambdaStack1.Outputs.MyLambdaFunction1Name
         MyLambdaFunctionArn1: !GetAtt LambdaStack1.Outputs.MyLambdaFunction1Arn   # Pass the Lambda function's ARN as a parameter
+        MyLambdaFunctionName2: !GetAtt LambdaStack1.Outputs.MyLambdaFunction2Name
+        MyLambdaFunctionArn2: !GetAtt LambdaStack1.Outputs.MyLambdaFunction2Arn
     
