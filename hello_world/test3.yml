@@ -16,10 +16,16 @@ Parameters:
     #Default: 'devops'
     Description: Environment name.
     
-  LambdaFunctionArn1:
+  MyLambdaFunctionName1:
     Type: String
     #Default: dev
     Description: LambdaFunction name.
+    
+  MyLambdaFunctionArn1:
+    Type: String
+    #Default: dev
+    Description: LambdaFunction Arn.
+    
     
 Resources:
   MyRestApi1:
@@ -85,7 +91,7 @@ Resources:
     Type: 'AWS::Lambda::Permission'
     Properties:
       Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref MyLambdaFunction1
+      FunctionName: !Sub  ${MyLambdaFunctionName1}
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApi1}/${Env}/GET/user'
       
