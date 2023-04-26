@@ -18,15 +18,15 @@ phases:
 
   build:
     commands:
-      - sam validate --template template.yaml
-      - sam build -t template.yaml #--use-container
+      - sam validate --template template.yml
+      - sam build -t template.yml #--use-container
       # - aws ecr get-login-password --region $MyRegion | docker login --username AWS --password-stdin $MyAccountId.dkr.ecr.us-east-1.amazonaws.com 
       # - aws s3 sync resources s3://sam-cli-dionysus-bucket/resources/ --delete
 
   post_build:
     commands:
-      - sam package --template-file template.yaml --s3-bucket sam-cli-dionysus-bucket --output-template-file packaged.yaml
-      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --template-file packaged.yaml
+      - sam package --template-file template.yml --s3-bucket sam-cli-dionysus-bucket --output-template-file testpackaged.yml
+      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --template-file testpackaged.yml
         --stack-name test-stack 
         --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND 
         --parameter-overrides Env=$MyEnv AccountId=$MyAccountId Region=$MyRegion 
