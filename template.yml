@@ -17,21 +17,23 @@ Parameters:
     Description: Environment name.
 
 Resources:
-  userapi:
+  LambdaStack1:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: users_api/users_api_template.yml
-      Parameters: 
+      TemplateURL: ./myfolder1/test1.yml
+      Parameters:
         Region: !Ref Region
         AccountId: !Ref AccountId
         Env: !Ref Env
-               
-  gmailapi:
+
+  ApiGatewayStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: gmail_api/gmail_api_template.yml
-      Parameters: 
+      TemplateURL: ./hello_world/test3.yml
+      Parameters:
+        Parameters: 
         Region: !Ref Region
         AccountId: !Ref AccountId
         Env: !Ref Env
+        LambdaFunctionArn: !GetAtt LambdaStack1.Outputs.MyLambdaFunction1Arn # Pass the Lambda function's ARN as a parameter
     
