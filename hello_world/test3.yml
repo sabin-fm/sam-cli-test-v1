@@ -25,6 +25,16 @@ Parameters:
     Type: String
     #Default: dev
     Description: LambdaFunction Arn.
+  
+  MyLambdaFunctionName2:
+    Type: String
+    #Default: dev
+    Description: LambdaFunction name.
+    
+  MyLambdaFunctionArn2:
+    Type: String
+    #Default: dev
+    Description: LambdaFunction Arn.
     
     
 Resources:
@@ -44,7 +54,17 @@ Resources:
         Fn::GetAtt:
           - "MyRestApi1"
           - "RootResourceId"
-      PathPart: 'user'
+      PathPart: 'test1'
+      
+  MyResource2:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref MyRestApi1
+      ParentId: 
+        Fn::GetAtt:
+          - "MyRestApi1"
+          - "RootResourceId"
+      PathPart: 'test2'
       
   MyMethod1:
     Type: 'AWS::ApiGateway::Method'
@@ -58,6 +78,19 @@ Resources:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${MyLambdaFunctionArn1}/invocations'
+  
+  MyMethod2:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref MyRestApi1
+      ResourceId: !Ref MyResource2
+      HttpMethod: GET
+      AuthorizationType: NONE #COGNITO_USER_POOLS  # Set authorization type to COGNITO_USER_POOLS
+     # AuthorizerId: !Ref MyAuthorizer  # Set the ID of the authorizer
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${MyLambdaFunctionArn2}/invocations'
    
    
   MyAuthorizer:
@@ -74,6 +107,7 @@ Resources:
     Type: 'AWS::ApiGateway::Deployment'
     DependsOn:
       - MyMethod1
+      - MyMethod2
        
     Properties:
       RestApiId: !Ref MyRestApi1
@@ -93,7 +127,14 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Sub  ${MyLambdaFunctionName1}
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApi1}/${Env}/GET/user'
+      SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApi1}/${Env}/GET/test1'
       
+  MyLambdaPermission2:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Sub  ${MyLambdaFunctionName2}
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApi1}/${Env}/GET/test2'
       
       
