@@ -69,7 +69,7 @@ Outputs:
     Export:
       Name: !Sub 'MyLambdaFunction2Name'
       
-  MyLambdaFunction1Arn:
+  MyLambdaFunction2Arn:
     Description: ARN of the MyLambdaFunction1 Lambda function
     Value: !GetAtt MyLambdaFunction2.Arn
     Export:
