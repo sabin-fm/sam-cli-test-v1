@@ -45,6 +45,6 @@ Resources:
         Env: !Ref Env
         MyLambdaFunctionName1: !GetAtt LambdaStack1.Outputs.MyLambdaFunction1Name
         MyLambdaFunctionArn1: !GetAtt LambdaStack1.Outputs.MyLambdaFunction1Arn   # Pass the Lambda function's ARN as a parameter
-        MyLambdaFunctionName2: !GetAtt LambdaStack1.Outputs.MyLambdaFunction2Name
-        MyLambdaFunctionArn2: !GetAtt LambdaStack1.Outputs.MyLambdaFunction2Arn
+        MyLambdaFunctionName2: !GetAtt LambdaStack2.Outputs.MyLambdaFunction2Name
+        MyLambdaFunctionArn2: !GetAtt LambdaStack2.Outputs.MyLambdaFunction2Arn
     
