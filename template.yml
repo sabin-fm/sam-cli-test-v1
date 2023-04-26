@@ -1,39 +1,37 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
+#Transform: AWS::Serverless-2016-10-31
 Parameters:
   Region:
     Type: String
-    #Default: 'us-east-1'
-    Description: The AWS region in which to create resources
+    #Default: us-west-1
+    Description: The AWS region in which to create resources.
 
   AccountId:
     Type: String
-    #Default: '548616401217'
+    #Default: 548616401217
     Description: The AWS account ID where the resources will be created.
       
   Env:
     Type: String
-    #Default: 'devops'
+    #Default: dev
     Description: Environment name.
+
 Resources:
-  HelloWorldAPI:
-    Type: AWS::Serverless::Api
+  userapi:
+    Type: AWS::CloudFormation::Stack
     Properties:
-      Name: Hello World API
-      StageName: Prod
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+      TemplateURL: users_api/users_api_template.yml
+      Parameters: 
+        Region: !Ref Region
+        AccountId: !Ref AccountId
+        Env: !Ref Env
+               
+  gmailapi:
+    Type: AWS::CloudFormation::Stack
     Properties:
-      PackageType: Image
-      ImageConfig:
-        Command: ["lambda_function.lambda_handler"]
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            RestApiId: !Ref HelloWorldAPI
-            Path: /hello
-            Method: get
-    Metadata:
-      Dockerfile: Dockerfile
-      DockerContext: .
-      DockerTag: v1
+      TemplateURL: gmail_api/gmail_api_template.yml
+      Parameters: 
+        Region: !Ref Region
+        AccountId: !Ref AccountId
+        Env: !Ref Env
+    
