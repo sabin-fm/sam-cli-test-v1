@@ -63,8 +63,15 @@ Resources:
                 Resource: '*'
 
 Outputs:
+MyLambdaFunction1Name:
+    Description: ARN of the MyLambdaFunction1 Lambda function
+    Value: !Ref MyLambdaFunction1
+    Export:
+      Name: !Sub 'MyLambdaFunction1Name'
+      
   MyLambdaFunction1Arn:
     Description: ARN of the MyLambdaFunction1 Lambda function
     Value: !GetAtt MyLambdaFunction1.Arn
     Export:
       Name: !Sub 'MyLambdaFunction1Arn'
+  
