@@ -34,5 +34,6 @@ Resources:
         Region: !Ref Region
         AccountId: !Ref AccountId
         Env: !Ref Env
-        LambdaFunctionArn1: !GetAtt LambdaStack1.Outputs.MyLambdaFunction1Arn # Pass the Lambda function's ARN as a parameter
+        MyLambdaFunctionName1: !GetAtt LambdaStack1.Outputs.MyLambdaFunction1Name
+        MyLambdaFunctionArn1: !GetAtt LambdaStack1.Outputs.MyLambdaFunction1Arn   # Pass the Lambda function's ARN as a parameter
     
