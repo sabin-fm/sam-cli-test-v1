@@ -15,12 +15,6 @@ Parameters:
     Type: String
     #Default: dev
     Description: Environment name.
-    
-  LambdaFunctionArn1:
-    Type: String
-    #Default: dev
-    Description: LambdaFunction name.
-   
 
 Resources:
   LambdaStack1:
