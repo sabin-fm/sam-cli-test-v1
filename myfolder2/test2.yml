@@ -16,19 +16,10 @@ Parameters:
     #Default: dev
     Description: Environment name.
 
-Resources:
-  userapi:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: users_api/users_api_template.yml
-      Parameters: 
-        Region: !Ref Region
-        AccountId: !Ref AccountId
-        Env: !Ref Env
         
 Resources:
 
-  MyLambdaFunction1:
+  MyLambdaFunction2:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: !Sub '${Env}_test_2'
