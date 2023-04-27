@@ -49,7 +49,7 @@ Resources:
     Properties:
       TemplateURL: ./hello_world/test3.yml
       Parameters:
-        MyRestApiId: !Ref MyRestApi1
+        MyRestApiId: !GetAtt MyRestApi1
         Region: !Ref Region
         AccountId: !Ref AccountId
         Env: !Ref Env
@@ -62,7 +62,7 @@ Resources:
     Properties:
       TemplateURL: ./hello_world/test4.yml
       Parameters:
-        MyRestApiId: !Ref MyRestApi1
+        MyRestApiId: !GetAtt MyRestApi1
         Region: !Ref Region
         AccountId: !Ref AccountId
         Env: !Ref Env   
