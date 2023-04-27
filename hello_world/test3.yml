@@ -16,6 +16,12 @@ Parameters:
     #Default: 'devops'
     Description: Environment name.
     
+    
+  MyRestApiId:
+   Type: String
+   #Default: 'devops'
+   Description: RestApi Id.
+    
   MyLambdaFunctionName1:
     Type: String
     #Default: dev
@@ -32,10 +38,10 @@ Resources:
   MyResource1:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
-      RestApiId: !Ref MyRestApi1
+      RestApiId: !Ref MyRestApiId
       ParentId: 
         Fn::GetAtt:
-          - "MyRestApi1"
+          - "MyRestApiId"
           - "RootResourceId"
       PathPart: 'test1'
       
@@ -44,7 +50,7 @@ Resources:
   MyMethod1:
     Type: 'AWS::ApiGateway::Method'
     Properties:
-      RestApiId: !Ref MyRestApi1
+      RestApiId: !Ref MyRestApiId
       ResourceId: !Ref MyResource1
       HttpMethod: GET
       AuthorizationType: NONE #COGNITO_USER_POOLS  # Set authorization type to COGNITO_USER_POOLS
@@ -61,7 +67,7 @@ Resources:
       Name: my-cognito-authorizer
       Type: COGNITO_USER_POOLS
       IdentitySource: method.request.header.Authorization
-      RestApiId: !Ref MyRestApi1
+      RestApiId: !Ref MyRestApiId
       ProviderARNs:
         - !Sub arn:aws:cognito-idp:${Region}:${AccountId}:userpool/us-east-1_zHG6ezXPp    #${UserPoolId}
 
@@ -71,12 +77,12 @@ Resources:
       - MyMethod1
              
     Properties:
-      RestApiId: !Ref MyRestApi1
+      RestApiId: !Ref MyRestApiId
 
   MyStage:
     Type: 'AWS::ApiGateway::Stage'
     Properties:
-      RestApiId: !Ref MyRestApi1
+      RestApiId: !Ref MyRestApiId
       DeploymentId: !Ref MyDeployment
       StageName: !Sub '${Env}'
       Variables:
@@ -88,5 +94,5 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Sub  ${MyLambdaFunctionName1}
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApi1}/${Env}/GET/test1'
+      SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApiId}/${Env}/GET/test1'
 
