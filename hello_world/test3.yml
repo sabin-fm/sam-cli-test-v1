@@ -38,7 +38,7 @@ Resources:
   MyResource1:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !GetAtt MyRestApiId
       ParentId: 
         Fn::GetAtt:
           - "MyRestApiId"
@@ -50,7 +50,7 @@ Resources:
   MyMethod1:
     Type: 'AWS::ApiGateway::Method'
     Properties:
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !GetAtt MyRestApiId
       ResourceId: !Ref MyResource1
       HttpMethod: GET
       AuthorizationType: NONE #COGNITO_USER_POOLS  # Set authorization type to COGNITO_USER_POOLS
@@ -67,7 +67,7 @@ Resources:
       Name: my-cognito-authorizer
       Type: COGNITO_USER_POOLS
       IdentitySource: method.request.header.Authorization
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !GetAtt MyRestApiId
       ProviderARNs:
         - !Sub arn:aws:cognito-idp:${Region}:${AccountId}:userpool/us-east-1_zHG6ezXPp    #${UserPoolId}
 
@@ -77,12 +77,12 @@ Resources:
       - MyMethod1
              
     Properties:
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !GetAtt MyRestApiId
 
   MyStage:
     Type: 'AWS::ApiGateway::Stage'
     Properties:
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !GetAtt MyRestApiId
       DeploymentId: !Ref MyDeployment
       StageName: !Sub '${Env}'
       Variables:
