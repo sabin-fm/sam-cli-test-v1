@@ -39,13 +39,9 @@ Resources:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       RestApiId: !Ref MyRestApiId
-      ParentId: 
-        Fn::GetAtt:
-          - "MyRestApiId"
-          - "RootResourceId"
+      ParentId: !ImportValue MyRestApiId:RootResourceId
       PathPart: 'test1'
       
- 
       
   MyMethod1:
     Type: 'AWS::ApiGateway::Method'
