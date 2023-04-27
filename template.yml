@@ -67,7 +67,13 @@ Resources:
         Env: !Ref Env   
         MyLambdaFunctionName2: !GetAtt LambdaStack2.Outputs.MyLambdaFunction2Name
         MyLambdaFunctionArn2: !GetAtt LambdaStack2.Outputs.MyLambdaFunction2Arn
-    
+     
+     
+Outputs:
+  MyRestApiId:
+   Value: !Ref MyRestApi1
+   Export:
+    Name: MyRestApiId
      
 
 
