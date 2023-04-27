@@ -26,14 +26,14 @@ Resources:
         AccountId: !Ref AccountId
         Env: !Ref Env
   
-  LambdaStack2:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: ./myfolder2/test2.yml
-      Parameters:
-        Region: !Ref Region
-        AccountId: !Ref AccountId
-        Env: !Ref Env
+#  LambdaStack2:
+ #   Type: AWS::CloudFormation::Stack
+  #  Properties:
+   #   TemplateURL: ./myfolder2/test2.yml
+    #  Parameters:
+     #   Region: !Ref Region
+      #  AccountId: !Ref AccountId
+       # Env: !Ref Env
         
         
   MyRestApi1:
