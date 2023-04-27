@@ -16,10 +16,10 @@ Parameters:
     #Default: 'devops'
     Description: Environment name.
     
- MyRestApiId:
-   Type: String
-   #Default: 'devops'
-   Description: RestApi Id.
+  MyRestApiId:
+    Type: String
+    #Default: 'devops'
+    Description: RestApi Id.
    
   MyLambdaFunctionName2:
     Type: String
