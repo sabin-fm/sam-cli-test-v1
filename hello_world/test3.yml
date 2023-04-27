@@ -65,6 +65,37 @@ Resources:
           - "MyRestApi1"
           - "RootResourceId"
       PathPart: 'test2'
+
+  MyResource7:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref MyRestApi1
+      ParentId: 
+        Fn::GetAtt:
+          - "MyRestApi1"
+          - "RootResourceId"
+      PathPart: 'culture'
+    DependsOn:
+      - MyRestApi1
+
+  Nested4Resource7:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref MyRestApi1
+      ParentId: !Ref MyResource7
+      PathPart: 'psychological_safety'
+    DependsOn:
+      - MyResource7
+
+  Nested1Nested4Resource7:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref MyRestApi1
+      ParentId: !Ref Nested4Resource7
+      PathPart: 'current'
+    DependsOn:
+      - Nested4Resource7
+
       
   MyMethod1:
     Type: 'AWS::ApiGateway::Method'
@@ -78,6 +109,8 @@ Resources:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
         Uri: !Sub 'arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${MyLambdaFunctionArn1}/invocations'
+        
+ 
   
   MyMethod2:
     Type: 'AWS::ApiGateway::Method'
