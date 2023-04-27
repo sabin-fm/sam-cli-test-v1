@@ -37,10 +37,7 @@ Resources:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
       RestApiId: !Ref MyRestApiId
-      ParentId: 
-        !GetAtt 
-          - MyRestApiId
-          - RootResourceId
+      ParentId: !Sub '${MyRestApiId}.RootResourceId'
       PathPart: 'test2'
 
   MyMethod2:
