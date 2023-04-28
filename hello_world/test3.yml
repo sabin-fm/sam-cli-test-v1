@@ -41,7 +41,7 @@ Resources:
       RestApiId: !Ref MyRestApiId
       ParentId: 
         Fn::GetAtt:
-          - "MyRestApi1"
+          - "MyRestApiId"
           - "RootResourceId"
       PathPart: 'test1'
       
