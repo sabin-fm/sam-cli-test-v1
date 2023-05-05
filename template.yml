@@ -35,8 +35,6 @@ Resources:
       #  AccountId: !Ref AccountId
        # Env: !Ref Env
         
-        
-
           
   ResourceStack1:
     Type: AWS::CloudFormation::Stack
