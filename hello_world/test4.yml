@@ -1,3 +1,4 @@
+
 AWSTemplateFormatVersion: '2010-09-09'
 #Transform: 'AWS::Serverless-2016-10-31'
 Parameters:
@@ -16,10 +17,6 @@ Parameters:
     #Default: 'devops'
     Description: Environment name.
     
-  MyRestApiId:
-    Type: String
-    #Default: 'devops'
-    Description: RestApi Id.
    
   MyLambdaFunctionName2:
     Type: String
@@ -33,17 +30,26 @@ Parameters:
     
 Resources:
 
+  MyRestApi1:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: !Sub '${Env}_test_api'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+
   MyResource2:
     Type: 'AWS::ApiGateway::Resource'
     Properties:
-      RestApiId: !Ref MyRestApiId
-      ParentId: !Sub '${MyRestApiId}.RootResourceId'
+      RestApiId: !Ref MyRestApi1
+      ParentId: !Sub '${MyRestApi1}.RootResourceId'
       PathPart: 'test2'
 
   MyMethod2:
     Type: 'AWS::ApiGateway::Method'
     Properties:
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !Ref MyRestApi1
       ResourceId: !Ref MyResource2
       HttpMethod: GET
       AuthorizationType: NONE #COGNITO_USER_POOLS  # Set authorization type to COGNITO_USER_POOLS
@@ -60,7 +66,7 @@ Resources:
       Name: my-cognito-authorizer
       Type: COGNITO_USER_POOLS
       IdentitySource: method.request.header.Authorization
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !Ref MyRestApi1
       ProviderARNs:
         - !Sub arn:aws:cognito-idp:${Region}:${AccountId}:userpool/us-east-1_zHG6ezXPp    #${UserPoolId}
 
@@ -69,12 +75,12 @@ Resources:
     DependsOn:
           - MyMethod2 
     Properties:
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !Ref MyRestApi1
 
   MyStage:
     Type: 'AWS::ApiGateway::Stage'
     Properties:
-      RestApiId: !Ref MyRestApiId
+      RestApiId: !Ref MyRestApi1
       DeploymentId: !Ref MyDeployment
       StageName: !Sub '${Env}'
       Variables:
@@ -86,5 +92,5 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Sub  ${MyLambdaFunctionName2}
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApiId}/${Env}/GET/test2'
+      SourceArn: !Sub 'arn:aws:execute-api:${Region}:${AccountId}:${MyRestApi1}/${Env}/GET/test2'
       
