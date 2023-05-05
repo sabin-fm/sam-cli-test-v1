@@ -30,7 +30,7 @@ Parameters:
     
 Resources:
 
- MyRestApi1:
+  MyRestApi1:
     Type: 'AWS::ApiGateway::RestApi'
     Properties:
       Name: !Sub '${Env}_test_api'
