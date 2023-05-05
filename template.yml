@@ -36,13 +36,7 @@ Resources:
        # Env: !Ref Env
         
         
-  MyRestApi1:
-    Type: 'AWS::ApiGateway::RestApi'
-    Properties:
-      Name: !Sub '${Env}_test_api'
-      EndpointConfiguration:
-        Types:
-          - REGIONAL
+
           
   ResourceStack1:
     Type: AWS::CloudFormation::Stack
